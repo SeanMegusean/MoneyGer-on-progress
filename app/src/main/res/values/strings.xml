@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MoneyGer</string>
+    <string name="register">Dont have an account yet?</string>
+    <string name="Login">Login</string>
+</resources>
