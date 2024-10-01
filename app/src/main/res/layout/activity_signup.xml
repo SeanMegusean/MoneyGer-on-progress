@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Activities.Signup">
 
     <ImageView
@@ -56,6 +57,7 @@
                 android:layout_marginBottom="7sp"
                 android:hint="Username"
                 android:inputType="text"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +69,7 @@
             android:id="@+id/constraintLayout6"
             android:layout_width="283sp"
             android:layout_height="58sp"
-            android:layout_marginTop="124dp"
+            android:layout_marginTop="124sp"
             android:background="@drawable/credentials"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.527"
@@ -82,6 +84,7 @@
                 android:layout_marginTop="7sp"
                 android:layout_marginEnd="16sp"
                 android:layout_marginBottom="7sp"
+                android:textColor="@color/black"
                 android:hint="Pin"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -134,6 +137,7 @@
                 android:layout_marginEnd="16sp"
                 android:layout_marginBottom="7sp"
                 android:hint="Verify Pin"
+                android:textColor="@color/black"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
