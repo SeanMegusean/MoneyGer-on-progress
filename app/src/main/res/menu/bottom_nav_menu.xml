@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/expense"
+        android:title="Expenses"
+        android:icon="@drawable/xpens" />
+    <item
+        android:id="@+id/wallet"
+        android:title="Wallet"
+        android:icon="@drawable/waley" />
+    <item
+        android:id="@+id/savings"
+        android:title="Savings"
+        android:icon="@drawable/ipon" />
+
+</menu>
