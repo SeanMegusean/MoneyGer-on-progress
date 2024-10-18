@@ -10,16 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MoneyGer"
+        android:theme="@style/Theme.MoneyGer.NoActionBar"
         tools:targetApi="31">
         <activity
             android:name=".Activities.Homepage"
             android:exported="false" />
         <activity
             android:name=".Activities.Signup"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.SignUp"
             android:exported="false" />
         <activity
             android:name=".Activities.Registration"

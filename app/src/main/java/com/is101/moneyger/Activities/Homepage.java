@@ -1,41 +1,50 @@
 package com.is101.moneyger.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-
-import androidx.activity.EdgeToEdge;
+import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
+import androidx.fragment.app.Fragment;
 import com.is101.moneyger.R;
+import com.is101.moneyger.databinding.ActivityHomepageBinding;
 
 public class Homepage extends AppCompatActivity {
+
+    private ActivityHomepageBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_homepage);
+        binding = ActivityHomepageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // Apply insets for UI layout
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Set the initial fragment
+        if (savedInstanceState == null) {
+            replaceFragment(new Wallet());
+        }
 
-        // Set up logout button click listener
-        findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Perform logout actions
-                Intent intent = new Intent(Homepage.this, Registration.class);
-                startActivity(intent);
-                finish(); // Close Homepage activity
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
+            if (item.getItemId() == R.id.wallet) {
+                selectedFragment = new Wallet();
+            } else if (item.getItemId() == R.id.expense) {
+                selectedFragment = new Expenses();
+            } else if (item.getItemId() == R.id.savings) {
+                selectedFragment = new Savings();
             }
+
+            return replaceFragment(selectedFragment);
         });
+    }
+
+    private boolean replaceFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }

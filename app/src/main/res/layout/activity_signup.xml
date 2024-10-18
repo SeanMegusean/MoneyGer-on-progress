@@ -18,8 +18,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="319sp"
-        android:layout_height="683sp"
+        android:layout_width="320dp"
+        android:layout_height="663dp"
         android:layout_marginStart="39sp"
         android:layout_marginTop="70sp"
         android:layout_marginEnd="39sp"
@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="174dp"
-            android:layout_height="326dp"
+            android:layout_width="177dp"
+            android:layout_height="299dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,10 +40,10 @@
             android:id="@+id/constraintLayout7"
             android:layout_width="283sp"
             android:layout_height="58sp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/credentials"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintHorizontal_bias="0.555"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
@@ -69,10 +69,10 @@
             android:id="@+id/constraintLayout6"
             android:layout_width="283sp"
             android:layout_height="58sp"
-            android:layout_marginTop="124sp"
+            android:layout_marginTop="84dp"
             android:background="@drawable/credentials"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintHorizontal_bias="0.555"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
@@ -84,9 +84,9 @@
                 android:layout_marginTop="7sp"
                 android:layout_marginEnd="16sp"
                 android:layout_marginBottom="7sp"
-                android:textColor="@color/black"
                 android:hint="Pin"
                 android:inputType="number"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,9 +100,10 @@
             android:background="@drawable/red_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.407"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
-            app:layout_constraintVertical_bias="0.764">
+            app:layout_constraintVertical_bias="0.107">
 
             <TextView
                 android:id="@+id/textView3"
@@ -137,8 +138,8 @@
                 android:layout_marginEnd="16sp"
                 android:layout_marginBottom="7sp"
                 android:hint="Verify Pin"
-                android:textColor="@color/black"
                 android:inputType="number"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
