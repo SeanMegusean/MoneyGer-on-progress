@@ -4,5 +4,8 @@
         <item name="colorPrimary">@color/white</item>
     </style>
 
-    <style name="Theme.MoneyGer.NoActionBar" parent="Base.Theme.MoneyGer.NoActionBar" />
+    <style name="Theme.MoneyGer.NoActionBar" parent="Base.Theme.MoneyGer.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>
