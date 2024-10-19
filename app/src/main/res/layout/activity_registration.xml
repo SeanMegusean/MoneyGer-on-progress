@@ -47,6 +47,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_marginStart="16sp"
                 android:layout_marginEnd="4sp"
                 android:text="@string/register"
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3sp"
                 android:text="Sign Up here"
-                android:textColor="#F18176"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView4"
                 app:layout_constraintTop_toTopOf="parent" />
