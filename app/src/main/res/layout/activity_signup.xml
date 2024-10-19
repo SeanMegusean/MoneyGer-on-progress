@@ -18,8 +18,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="320dp"
-        android:layout_height="663dp"
+        android:layout_width="320sp"
+        android:layout_height="663sp"
         android:layout_marginStart="39sp"
         android:layout_marginTop="70sp"
         android:layout_marginEnd="39sp"
@@ -29,8 +29,9 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="177dp"
-            android:layout_height="299dp"
+            android:layout_width="177sp"
+            android:layout_height="299sp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +41,7 @@
             android:id="@+id/constraintLayout7"
             android:layout_width="283sp"
             android:layout_height="58sp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="20sp"
             android:background="@drawable/credentials"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.555"
