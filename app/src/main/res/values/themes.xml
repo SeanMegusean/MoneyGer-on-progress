@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MoneyGer.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/red</item>
+        <item name="android:windowFullscreen">false</item> <!-- Ensure fullscreen is false -->
     </style>
 
     <style name="Theme.MoneyGer.NoActionBar" parent="Base.Theme.MoneyGer.NoActionBar">
-        <item name="android:windowFullscreen">true</item>
+        <!-- This style does not specify NoActionBar, so it will include the action bar -->
     </style>
-
 </resources>

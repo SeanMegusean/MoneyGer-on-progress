@@ -63,7 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3sp"
                 android:text="Sign Up here"
-                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textColor="@color/red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -129,6 +130,7 @@
                 android:hint="Pin"
                 android:inputType="numberPassword"
                 android:textColor="@color/black"
+                android:textColorHint="#C2C2C2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

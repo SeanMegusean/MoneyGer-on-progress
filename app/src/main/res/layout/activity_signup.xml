@@ -31,7 +31,6 @@
             android:id="@+id/imageView2"
             android:layout_width="177sp"
             android:layout_height="299sp"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,6 +57,7 @@
                 android:layout_marginBottom="7sp"
                 android:hint="Username"
                 android:inputType="text"
+                android:textColorHint="#C2C2C2"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,12 +79,13 @@
 
             <EditText
                 android:id="@+id/pin"
-                android:layout_width="0sp"
-                android:layout_height="48sp"
+                android:layout_width="246dp"
+                android:layout_height="42dp"
                 android:layout_marginStart="16sp"
                 android:layout_marginTop="7sp"
                 android:layout_marginEnd="16sp"
                 android:layout_marginBottom="7sp"
+                android:textColorHint="#C2C2C2"
                 android:hint="Pin"
                 android:inputType="number"
                 android:textColor="@color/black"
@@ -122,11 +123,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
-            android:layout_width="283sp"
-            android:layout_height="58sp"
-            android:layout_marginTop="8dp"
+            android:layout_width="283dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="8sp"
             android:background="@drawable/credentials"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.54"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
@@ -141,6 +143,7 @@
                 android:hint="Verify Pin"
                 android:inputType="number"
                 android:textColor="@color/black"
+                android:textColorHint="#C2C2C2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
