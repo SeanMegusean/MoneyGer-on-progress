@@ -27,8 +27,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/StartBtn"
-        android:layout_width="275dp"
-        android:layout_height="60dp"
+        android:layout_width="275sp"
+        android:layout_height="60sp"
         android:layout_marginBottom="228sp"
         android:background="@drawable/red_button"
         app:layout_constraintBottom_toBottomOf="parent"
