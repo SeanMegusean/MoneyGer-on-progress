@@ -9,30 +9,32 @@
     tools:context=".Activities.MainActivity">
 
     <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_width="240dp"
+        android:layout_height="233dp"
+        android:layout_marginBottom="68dp"
+        app:layout_constraintBottom_toTopOf="@+id/StartBtn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/moneyger" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/untitled_design__1__removebg" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/StartBtn"
-        android:layout_width="275sp"
-        android:layout_height="60sp"
-        android:layout_marginBottom="228sp"
+        android:layout_width="275dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="228dp"
         android:background="@drawable/red_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
