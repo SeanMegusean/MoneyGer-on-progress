@@ -9,6 +9,14 @@
     tools:context=".Activities.MainActivity">
 
     <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/untitled_design__1__removebg" />
+
+    <ImageView
         android:id="@+id/imageView3"
         android:layout_width="240dp"
         android:layout_height="233dp"
@@ -17,14 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/moneyger" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/untitled_design__1__removebg" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/StartBtn"
