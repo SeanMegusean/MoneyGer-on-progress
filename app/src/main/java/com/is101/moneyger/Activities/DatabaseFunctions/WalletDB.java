@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WalletDB extends SQLiteOpenHelper {
-
     private Context context;
     private static final String DATABASE_NAME = "Walletfunction.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    private static final String TABLE_NAME = "orders";  // Table name is "orders"
+    private static final String TABLE_NAME = "orders";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_AMOUNT = "amount";
+    private static final String COLUMN_DESC = "description";
 
     public WalletDB(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,12 +34,12 @@ public class WalletDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create table query
         String query = "CREATE TABLE " + TABLE_NAME +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_DATE + " TEXT, " +
-                COLUMN_AMOUNT + " INTEGER);";
+                COLUMN_AMOUNT + " INTEGER, " +
+                COLUMN_DESC + " TEXT);";
         db.execSQL(query);
     }
 
@@ -48,16 +49,17 @@ public class WalletDB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Method to add an expense
-    public void addExpense(String title, String date, int amount) {
+    // Add expense
+    public void addExpense(String title, String date, int amount, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_DATE, date);
         cv.put(COLUMN_AMOUNT, amount);
-        long result = db.insert(TABLE_NAME, null, cv);
+        cv.put(COLUMN_DESC, description);  // Insert the description
 
+        long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
         } else {
@@ -65,53 +67,49 @@ public class WalletDB extends SQLiteOpenHelper {
         }
     }
 
-    // Read all data from the orders table
-    public Cursor readAllData() {
-        String query = "SELECT * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = null;
-        if (db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        return cursor;
-    }
-
-    // Method to fetch all transactions
+    // Fetch all transactions
     public List<RecyclerModel> getAllTransactions() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<RecyclerModel> transactions = new ArrayList<>();
-
-        // Query to fetch all transactions from "orders" table
-        String query = "SELECT * FROM " + TABLE_NAME;  // Table name is "orders", not "transactions"
+        String query = "SELECT * FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
 
-        // Check if cursor contains data
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Validate column indices
+                // Check if column indexes are valid
+                int idIndex = cursor.getColumnIndex(COLUMN_ID);
                 int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
                 int dateIndex = cursor.getColumnIndex(COLUMN_DATE);
                 int amountIndex = cursor.getColumnIndex(COLUMN_AMOUNT);
+                int descriptionIndex = cursor.getColumnIndex(COLUMN_DESC);
 
-                // Ensure the column indices are valid
-                if (titleIndex != -1 && dateIndex != -1 && amountIndex != -1) {
+                // Ensure valid column indexes before fetching data
+                if (idIndex != -1 && titleIndex != -1 && dateIndex != -1 && amountIndex != -1 && descriptionIndex != -1) {
+                    int id = cursor.getInt(idIndex);
                     String title = cursor.getString(titleIndex);
                     String date = cursor.getString(dateIndex);
                     int amount = cursor.getInt(amountIndex);
+                    String description = cursor.getString(descriptionIndex);
 
-                    // Add to the list of transactions
-                    transactions.add(new RecyclerModel(title, date, amount));
+                    transactions.add(new RecyclerModel(id,title, date, amount, description));
                 } else {
-                    // Log or handle the error if columns are missing
-                    Toast.makeText(context, "Invalid column indices", Toast.LENGTH_SHORT).show();
+                    // Log error if any column is missing
+                    Log.e("WalletDB", "One or more columns are missing from the cursor");
                 }
             } while (cursor.moveToNext());
-            cursor.close();  // Don't forget to close the cursor
+            cursor.close();
         }
 
         db.close();
         return transactions;
     }
+
+
+    public void deleteTransaction(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
 }
+
 
