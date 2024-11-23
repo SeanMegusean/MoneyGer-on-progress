@@ -1,7 +1,6 @@
 package com.is101.moneyger.Activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.is101.moneyger.R;

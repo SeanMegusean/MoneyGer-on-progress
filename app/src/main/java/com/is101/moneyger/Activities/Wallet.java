@@ -1,6 +1,4 @@
 package com.is101.moneyger.Activities;
-
-import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,9 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.is101.moneyger.Activities.DatabaseFunctions.WalletDB;
 import com.is101.moneyger.Activities.adapter.RecyclerAdapter;
