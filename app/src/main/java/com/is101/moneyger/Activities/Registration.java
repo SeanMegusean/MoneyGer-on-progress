@@ -55,7 +55,7 @@ public class Registration extends AppCompatActivity {
             Log.d("Registration", "Attempting login with username: " + username + " and pin: " + pin);
 
             // Check if user exists
-            if (dbHelper.checkUser(username, pin)) {
+            if (dbHelper .checkUser(username, pin)) {
                 Toast.makeText(Registration.this, "Login successful", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Registration.this, Homepage.class);
                 startActivity(intent);

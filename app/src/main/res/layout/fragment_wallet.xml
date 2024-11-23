@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/walletID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/walletID"
     android:background="@color/white"
     tools:context=".Activities.Wallet">
 
@@ -148,11 +148,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/history"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="349dp"
         android:layout_marginBottom="70dp">
@@ -174,25 +181,24 @@
             android:id="@+id/btnAddTransaction"
             android:layout_width="57dp"
             android:layout_height="55dp"
-            android:background="@drawable/red_button"
             android:layout_marginBottom="0dp"
+            android:background="@drawable/red_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="80dp"
+            tools:layout_editor_absoluteX="350dp"
+            tools:layout_editor_absoluteY="326dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
