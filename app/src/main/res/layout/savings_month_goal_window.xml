@@ -58,7 +58,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/sapwtextbg"
-            android:hint="        Amount"
+            android:hint="       Amount"
             android:inputType="numberDecimal"
             android:minHeight="48dp" />
 
