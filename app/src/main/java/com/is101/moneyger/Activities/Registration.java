@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -24,14 +25,15 @@ public class Registration extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registration);
 
+        // Initialize the DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
+
         // Apply insets for UI layout
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        dbHelper = new DatabaseHelper(this);
 
         // Set up sign-up click listener
         TextView signUpTextView = findViewById(R.id.textView5);
