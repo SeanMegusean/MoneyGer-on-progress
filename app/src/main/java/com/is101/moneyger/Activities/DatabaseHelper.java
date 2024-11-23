@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.is101.moneyger.Activities.model.RecyclerModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "moneyger.db";
     private static final int DATABASE_VERSION = 3;
@@ -17,44 +22,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_EXPENSE = "expense";
     private static final String TABLE_INCOME = "income";
     private static final String TABLE_TRANSACTIONS = "transactions";
+    private static final String TABLE_SAVINGS = "savings";
 
-    // User table columns
+    // Column names for each table
     private static final String UCOLUMN_ID = "U_id";
     private static final String UCOLUMN_USERNAME = "U_username";
     private static final String UCOLUMN_PIN = "U_pin";
 
-    // Wallet table columns
     private static final String WCOLUMN_ID = "W_id";
     private static final String WCOLUMN_BALANCE = "W_balance";
     private static final String WCOLUMN_DESCRIPTION = "W_description";
 
-    // Income table columns
     private static final String ICOLUMN_ID = "I_id";
     private static final String ICOLUMN_NAME = "I_name";
     private static final String ICOLUMN_AMOUNT = "I_amount";
     private static final String ICOLUMN_DESCRIPTION = "I_description";
     private static final String ICOLUMN_DATE = "I_date";
 
-    // Expense table columns
     private static final String ECOLUMN_ID = "E_id";
     private static final String ECOLUMN_NAME = "E_name";
     private static final String ECOLUMN_AMOUNT = "E_amount";
     private static final String ECOLUMN_DESCRIPTION = "E_description";
     private static final String ECOLUMN_DATE = "E_date";
 
-    // Transaction table columns
     private static final String TCOLUMN_ID = "T_id";
     private static final String TCOLUMN_AMOUNT = "T_amount";
     private static final String TCOLUMN_TYPE = "T_type";
     private static final String TCOLUMN_DESCRIPTION = "T_description";
     private static final String TCOLUMN_DATE = "T_date";
 
+    private static final String SCOLUMN_ID = "S_id";
+    private static final String SCOLUMN_NAME = "S_name";
+    private static final String SCOLUMN_AMOUNT = "S_amount";
+    private static final String SCOLUMN_DATE = "S_date";
+
     private static DatabaseHelper instance;
 
+    // Constructor
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Singleton pattern
     public static synchronized DatabaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseHelper(context.getApplicationContext());
@@ -64,192 +73,145 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createUsersTable = "CREATE TABLE " + TABLE_USERS + " (" +
+        // Create tables
+        db.execSQL(createUsersTable());
+        db.execSQL(createWalletTable());
+        db.execSQL(createIncomeTable());
+        db.execSQL(createExpenseTable());
+        db.execSQL(createTransactionsTable());
+        db.execSQL(createSavingsTable());
+    }
+
+    // SQL table creation methods
+    private String createUsersTable() {
+        return "CREATE TABLE " + TABLE_USERS + " (" +
                 UCOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 UCOLUMN_USERNAME + " TEXT NOT NULL, " +
                 UCOLUMN_PIN + " TEXT NOT NULL)";
+    }
 
-        String createWalletTable = "CREATE TABLE " + TABLE_WALLET + " (" +
+    private String createWalletTable() {
+        return "CREATE TABLE " + TABLE_WALLET + " (" +
                 WCOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 WCOLUMN_BALANCE + " REAL DEFAULT 0, " +
                 WCOLUMN_DESCRIPTION + " TEXT)";
+    }
 
-        String createIncomeTable = "CREATE TABLE " + TABLE_INCOME + " (" +
+    private String createIncomeTable() {
+        return "CREATE TABLE " + TABLE_INCOME + " (" +
                 ICOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ICOLUMN_NAME + " TEXT NOT NULL, " +
                 ICOLUMN_DESCRIPTION + " TEXT, " +
                 ICOLUMN_AMOUNT + " REAL NOT NULL, " +
                 ICOLUMN_DATE + " TEXT)";
+    }
 
-        String createExpenseTable = "CREATE TABLE " + TABLE_EXPENSE + " (" +
+    private String createExpenseTable() {
+        return "CREATE TABLE " + TABLE_EXPENSE + " (" +
                 ECOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ECOLUMN_NAME + " TEXT NOT NULL, " +
                 ECOLUMN_DESCRIPTION + " TEXT, " +
                 ECOLUMN_AMOUNT + " REAL NOT NULL, " +
                 ECOLUMN_DATE + " TEXT)";
+    }
 
-        String createTransactionsTable = "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
+    private String createTransactionsTable() {
+        return "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
                 TCOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TCOLUMN_AMOUNT + " REAL NOT NULL, " +
                 TCOLUMN_TYPE + " TEXT NOT NULL, " +
                 TCOLUMN_DESCRIPTION + " TEXT, " +
                 TCOLUMN_DATE + " TEXT)";
-
-        db.execSQL(createUsersTable);
-        db.execSQL(createWalletTable);
-        db.execSQL(createIncomeTable);
-        db.execSQL(createExpenseTable);
-        db.execSQL(createTransactionsTable);
     }
 
-    public boolean isUserExists(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ?", new String[]{username});
-
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-
-        return count > 0; // True if username is found, False otherwise
+    private String createSavingsTable() {
+        return "CREATE TABLE " + TABLE_SAVINGS + " (" +
+                SCOLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                SCOLUMN_NAME + " TEXT NOT NULL, " +
+                SCOLUMN_AMOUNT + " REAL NOT NULL, " +
+                SCOLUMN_DATE + " TEXT)";
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Consider a more sophisticated upgrade strategy to preserve data.
+        // Drop tables if they exist
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WALLET);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INCOME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGS);
         onCreate(db);
     }
 
-    public boolean insertUser(String username, String pin) {
+    public boolean insertSavings(String name, double amount, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UCOLUMN_USERNAME, username);
-        values.put(UCOLUMN_PIN, pin);
-        try {
-            long result = db.insert(TABLE_USERS, null, values);
-            return result != -1;
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Insert User Error: " + e.getMessage());
-            return false;
-        } finally {
-            db.close();
-        }
+        values.put(SCOLUMN_NAME, name);
+        values.put(SCOLUMN_AMOUNT, amount);
+        values.put(SCOLUMN_DATE, date);
+        long result = db.insert(TABLE_SAVINGS, null, values);
+        db.close(); // Close database to free resources
+        return result != -1;
     }
 
-    public boolean checkUser(String username, String pin) {
+    public List<RecyclerModel> getAllSavings() {
+        List<RecyclerModel> savingsList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
+
         try {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE " +
-                    UCOLUMN_USERNAME + " = ? AND " + UCOLUMN_PIN + " = ?", new String[]{username, pin});
-            return cursor.getCount() > 0;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            db.close();
-        }
-    }
-
-    public boolean insertIncome(String name, double amount, String description, String date) {
-        return insertRecord(TABLE_INCOME, ICOLUMN_NAME, name, ICOLUMN_AMOUNT, amount, ICOLUMN_DESCRIPTION, description, ICOLUMN_DATE, date);
-    }
-
-    public boolean insertExpense(String name, double amount, String description, String date) {
-        return insertRecord(TABLE_EXPENSE, ECOLUMN_NAME, name, ECOLUMN_AMOUNT, amount, ECOLUMN_DESCRIPTION, description, ECOLUMN_DATE, date);
-    }
-
-    public boolean insertInitialBalance(double balance) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(WCOLUMN_BALANCE, balance);
-        try {
-            long result = db.insert(TABLE_WALLET, null, values);
-            return result != -1;
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Insert Initial Balance Error: " + e.getMessage());
-            return false;
-        } finally {
-            db.close();
-        }
-    }
-
-    public double getCurrentBalance() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        double balance = 0.0;
-        try {
-            cursor = db.rawQuery("SELECT " + WCOLUMN_BALANCE + " FROM " + TABLE_WALLET, null);
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_SAVINGS, null);
             if (cursor.moveToFirst()) {
-                balance = cursor.getDouble(0);
+                do {
+                    int idIndex = cursor.getColumnIndex(SCOLUMN_ID);
+                    int nameIndex = cursor.getColumnIndex(SCOLUMN_NAME);
+                    int amountIndex = cursor.getColumnIndex(SCOLUMN_AMOUNT);
+                    int dateIndex = cursor.getColumnIndex(SCOLUMN_DATE);
+
+                    // Check if indices are valid
+                    if (idIndex == -1 || nameIndex == -1 || amountIndex == -1 || dateIndex == -1) {
+                        Log.e("DatabaseHelper", "Column index not found. Check table definition.");
+                        continue; // Skip this iteration if any index is invalid
+                    }
+
+                    int id = cursor.getInt(idIndex);
+                    String name = cursor.getString(nameIndex);
+                    double amount = cursor.getDouble(amountIndex);
+                    String date = cursor.getString(dateIndex);
+
+                    savingsList.add(new RecyclerModel(id, name, amount, date)); // Adjust constructor as necessary
+                } while (cursor.moveToNext());
             }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Get All Savings Error: " + e.getMessage());
         } finally {
             if (cursor != null) {
-                cursor.close();
+                cursor.close(); // Ensure cursor is closed
             }
-            db.close();
+            db.close(); // Close database to free resources
         }
-        return balance;
+        return savingsList;
     }
 
-    public boolean updateBalance(double newBalance) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(WCOLUMN_BALANCE, newBalance);
-        try {
-            int rows = db.update(TABLE_WALLET, values, null, null);
-            return rows > 0;
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Update Balance Error: " + e.getMessage());
-            return false;
-        } finally {
-            db.close();
-        }
-    }
-
-    public boolean insertTransaction(double amount, String type, String description, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TCOLUMN_AMOUNT, amount);
-        values.put(TCOLUMN_TYPE, type);
-        values.put(TCOLUMN_DESCRIPTION, description);
-        values.put(TCOLUMN_DATE, date);
-        try {
-            long result = db.insert(TABLE_TRANSACTIONS, null, values);
-            return result != -1;
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Insert Transaction Error: " + e.getMessage());
-            return false;
-        } finally {
-            db.close();
-        }
-    }
-
-    public Cursor getAllTransactions() {
+    public double getTotalSavings() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_TRANSACTIONS, null);
-    }
+        Cursor cursor = null;
+        double total = 0.0;
 
-    private boolean insertRecord(String table, String columnName, String name, String columnAmount, double amount,
-                                 String columnDescription, String description, String columnDate, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(columnName, name);
-        values.put(columnAmount, amount);
-        values.put(columnDescription, description);
-        values.put(columnDate, date);
         try {
-            long result = db.insert(table, null, values);
-            return result != -1;
+            cursor = db.rawQuery("SELECT SUM(" + SCOLUMN_AMOUNT + ") FROM " + TABLE_SAVINGS, null);
+            if (cursor.moveToFirst()) {
+                total = cursor.getDouble(0);
+            }
         } catch (Exception e) {
-            Log.e("DatabaseHelper", "Insert Record Error: " + e.getMessage());
-            return false;
+            Log.e("DatabaseHelper", "Get Total Savings Error: " + e.getMessage());
         } finally {
-            db.close();
+            if (cursor != null) {
+                cursor.close(); // Ensure cursor is closed
+            }
+            db.close(); // Close database to free resources
         }
+        return total;
     }
 }
