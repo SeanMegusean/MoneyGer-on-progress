@@ -102,6 +102,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTransactionsTable);
     }
 
+    public boolean isUserExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ?", new String[]{username});
+
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        return count > 0; // True if username is found, False otherwise
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Consider a more sophisticated upgrade strategy to preserve data.

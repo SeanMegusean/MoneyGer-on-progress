@@ -38,7 +38,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.ssp)
+    implementation(libs.sdp)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
