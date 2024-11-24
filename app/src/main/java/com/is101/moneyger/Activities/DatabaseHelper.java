@@ -144,6 +144,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean checkUser(String username, String pin) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean userExists = false;
+
+        try {
+            cursor = db.query(TABLE_USERS,
+                    new String[]{UCOLUMN_ID},
+                    UCOLUMN_USERNAME + " = ? AND " + UCOLUMN_PIN + " = ?",
+                    new String[]{username, pin},
+                    null, null, null);
+
+            userExists = (cursor != null && cursor.moveToFirst());
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error checking user: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return userExists;
+    }
+
     public boolean insertSavings(String name, double amount, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -157,11 +182,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<RecyclerModel> getAllSavings() {
         List<RecyclerModel> savingsList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
 
-        try {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_SAVINGS, null);
+        try (SQLiteDatabase db = this.getReadableDatabase(); Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SAVINGS, null)) {
             if (cursor.moveToFirst()) {
                 do {
                     int idIndex = cursor.getColumnIndex(SCOLUMN_ID);
@@ -185,12 +207,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } catch (Exception e) {
             Log.e("DatabaseHelper", "Get All Savings Error: " + e.getMessage());
-        } finally {
-            if (cursor != null) {
-                cursor.close(); // Ensure cursor is closed
-            }
-            db.close(); // Close database to free resources
         }
+        // Ensure cursor is closed
+        // Close database to free resources
         return savingsList;
     }
 
@@ -214,4 +233,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return total;
     }
+
+    public boolean isUserExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean userExists = false;
+
+        try {
+            cursor = db.query(TABLE_USERS,
+                    new String[]{UCOLUMN_ID},
+                    UCOLUMN_USERNAME + " = ?",
+                    new String[]{username},
+                    null, null, null);
+
+            userExists = (cursor != null && cursor.moveToFirst());
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error checking if user exists: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return userExists;
+    }
+
+    // Method to insert a new user
+    public boolean insertUser(String username, String pin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UCOLUMN_USERNAME, username);
+        values.put(UCOLUMN_PIN, pin); // Consider hashing the PIN for security
+
+        long result = db.insert(TABLE_USERS, null, values);
+        db.close(); // Close database to free resources
+        return result != -1; // Return true if insertion was successful
+    }
+
 }
