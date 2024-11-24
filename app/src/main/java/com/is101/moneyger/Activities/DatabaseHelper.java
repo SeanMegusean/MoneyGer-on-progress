@@ -259,6 +259,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userExists;
     }
 
+
+    //this is a buffer comment exclusive to commit and push the code, no real function. Dismiss this
+
+
     // Method to insert a new user
     public boolean insertUser(String username, String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
