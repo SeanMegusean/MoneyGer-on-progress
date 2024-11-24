@@ -1,7 +1,5 @@
 package com.is101.moneyger.Activities;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,20 +49,39 @@ public class NewTransaction extends Fragment {
 
         setDate();
 
-        // add button
+        // Add expense button functionality
         addexpensebtn.setOnClickListener(v -> {
+            // Validate inputs
             if (formattedDate.isEmpty() || editTextText.getText().toString().trim().isEmpty() ||
                     spinnerCategory.getSelectedItemPosition() == 0) {
                 Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Parse amount and handle potential exceptions
+            int amount;
+            try {
+                amount = Integer.parseInt(editTextText.getText().toString().trim());
+            } catch (NumberFormatException e) {
+                Toast.makeText(getActivity(), "Enter a valid number for the amount", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Retrieve other inputs
             String category = spinnerCategory.getSelectedItem().toString().trim();
-            int amount = Integer.parseInt(editTextText.getText().toString().trim());
             String description = descripttxt.getText().toString().trim();
 
+            // Add the expense to the database
             WalletDB wdb = new WalletDB(getActivity());
             wdb.addExpense(category, formattedDate, amount, description);
+
+            // Clear input fields
+            editTextText.setText("");  // Clear the amount field
+            descripttxt.setText("");  // Clear the description field
+            spinnerCategory.setSelection(0); // Reset the spinner to the default value
+
+            // Show a success message
+            Toast.makeText(getActivity(), "Expense added successfully", Toast.LENGTH_SHORT).show();
         });
 
         return view;
