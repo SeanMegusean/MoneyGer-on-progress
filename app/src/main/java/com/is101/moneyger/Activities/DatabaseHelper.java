@@ -309,3 +309,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userExists;
     }
 }
+
+//this comment is used for me to push this version. Kindly dismiss this

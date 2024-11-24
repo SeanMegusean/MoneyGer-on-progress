@@ -41,7 +41,8 @@
         android:scaleType="centerCrop"
         android:src="@drawable/arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView6"
@@ -156,7 +157,8 @@
         android:background="@drawable/ic_plus_sign"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/ic_plus_sign" />
+        app:srcCompat="@drawable/ic_plus_sign"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView18"
@@ -213,3 +215,5 @@
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--//this comment is used for me to push this version. Kindly dismiss this -->
