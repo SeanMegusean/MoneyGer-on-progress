@@ -4,8 +4,6 @@ import com.is101.moneyger.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.Spanned;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +36,9 @@ public class Signup extends AppCompatActivity {
             EditText pinEditText = findViewById(R.id.pin);
             EditText verifyPinEditText = findViewById(R.id.VFPin);
 
-            pinEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-            verifyPinEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+            // Set maximum length for pin fields
+            pinEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)}); // Allow longer pins
+            verifyPinEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
 
             String username = usernameEditText.getText().toString().trim();
             String pin = pinEditText.getText().toString().trim();
@@ -48,6 +47,11 @@ public class Signup extends AppCompatActivity {
             // Validate inputs
             if (isEmpty(username) || isEmpty(pin) || isEmpty(verifyPin)) {
                 Toast.makeText(Signup.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (pin.length() < 4) {
+                Toast.makeText(Signup.this, "PIN must be at least 4 characters long", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -79,5 +83,3 @@ public class Signup extends AppCompatActivity {
         return str.length() == 0;
     }
 }
-
-//this comment is used for me to push this version. Kindly dismiss this
