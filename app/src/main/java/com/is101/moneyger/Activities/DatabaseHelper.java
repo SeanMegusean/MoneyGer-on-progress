@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.is101.moneyger.Activities.model.RecyclerModel;
-import com.is101.moneyger.Activities.ExpenseModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
