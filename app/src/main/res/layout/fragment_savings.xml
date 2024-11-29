@@ -41,8 +41,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
@@ -103,6 +102,7 @@
         android:layout_height="25sp"
         android:layout_marginTop="64dp"
         android:foreground="@drawable/progress_bar_background"
+        android:src="@tools:sample/avatars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
@@ -115,7 +115,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
         android:foregroundTint="@color/ewan"
-        android:indeterminate="false"
+        android:interminate="false"
         android:max="100"
         android:progress="65"
         app:layout_constraintEnd_toEndOf="parent"
@@ -156,8 +156,7 @@
         android:background="@drawable/ic_plus_sign"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/ic_plus_sign"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:srcCompat="@drawable/ic_plus_sign" />
 
     <TextView
         android:id="@+id/textView18"
@@ -191,6 +190,14 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="409dp"
+        android:layout_height="66dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
     <TextView
         android:id="@+id/amount_input"
         android:layout_width="wrap_content"
@@ -206,5 +213,3 @@
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--//this comment is used for me to push this version. Kindly dismiss this -->
