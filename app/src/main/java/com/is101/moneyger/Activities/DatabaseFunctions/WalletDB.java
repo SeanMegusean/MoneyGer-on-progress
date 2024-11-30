@@ -112,4 +112,3 @@ public class WalletDB extends SQLiteOpenHelper {
     }
 }
 
-

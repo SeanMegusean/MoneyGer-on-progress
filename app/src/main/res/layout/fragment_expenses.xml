@@ -420,7 +420,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView13"
                 app:layout_constraintVertical_bias="0.753" />
 
-            <!-- debugger lang itong comment wag pansinin -->
+            <!-- debugger lang po itong comment hehe -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
