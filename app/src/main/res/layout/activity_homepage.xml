@@ -46,7 +46,6 @@
             app:menu="@menu/bottom_nav_menu"
             android:backgroundTint="@color/white"
             app:itemTextColor="@color/brown"
-
             app:itemIconTint="@color/brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,5 +60,7 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/sidebar_header"
         app:menu="@menu/side_nav_menu"
+        app:itemIconTint="@color/red"
+        app:itemTextColor="@color/red"
         app:itemTextAppearanceActiveBoldEnabled="true"/>
 </androidx.drawerlayout.widget.DrawerLayout>
