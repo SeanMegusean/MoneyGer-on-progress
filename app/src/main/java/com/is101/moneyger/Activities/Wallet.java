@@ -1,21 +1,17 @@
 package com.is101.moneyger.Activities;
 
 import android.os.Bundle;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.is101.moneyger.Activities.DatabaseFunctions.WalletDB;
 import com.is101.moneyger.Activities.adapter.RecyclerAdapter;
 import com.is101.moneyger.Activities.model.RecyclerModel;
 import com.is101.moneyger.R;
-
 import java.util.ArrayList;
 import java.util.List;
 

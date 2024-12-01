@@ -18,122 +18,152 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView17"
-            android:layout_width="64dp"
-            android:layout_height="60dp"
-            android:src="@drawable/expense"
-            app:layout_constraintBottom_toTopOf="@+id/textView16"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toTopOf="@+id/imageView10"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/textView28"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineleft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
-            android:layout_marginEnd="68dp"
-            android:layout_marginBottom="20dp"
-            android:text="Daily"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toStartOf="@+id/textView29"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.06" />
 
-        <TextView
-            android:id="@+id/textView29"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="180dp"
-            android:layout_marginBottom="20dp"
-            android:text="Weekly"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toStartOf="@+id/textView30"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.94" />
 
-        <TextView
-            android:id="@+id/textView30"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinetop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:text="Monthly"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@+id/textView19"
-            app:layout_constraintTop_toBottomOf="@+id/textView19"
-            app:layout_constraintVertical_bias="0.692" />
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.08" />
 
-        <TextView
-            android:id="@+id/textView"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinebot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="40dp"
-            android:text="My Expenses"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
 
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView19"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="56dp"
-            android:layout_height="37dp"
-
-            android:layout_marginEnd="116dp"
-            android:text="Total"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView28"
-            app:layout_constraintEnd_toStartOf="@+id/textView19"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.285" />
-
-        <TextView
-            android:id="@+id/textView19"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="4dp"
-            android:text="₱ 3002.00"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
 
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageView10"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrint"
+            android:layout_width="414dp"
+            android:layout_height="180dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline8"
+            app:layout_constraintEnd_toEndOf="@id/guidelineright"
+            app:layout_constraintStart_toStartOf="@+id/guidelineleft"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="44dp"
-            android:layout_height="48dp"
-            android:src="@drawable/menu__d15422c_"
-            app:layout_constraintBottom_toTopOf="@+id/textView19"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.956"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView"
-            app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/constrint"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/textView29"
+                app:layout_constraintStart_toStartOf="@+id/constrint"
+                app:layout_constraintTop_toBottomOf="@id/textView16" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/textView30"
+                app:layout_constraintStart_toEndOf="@id/textView28"
+                app:layout_constraintTop_toBottomOf="@id/textView19" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView29"
+                app:layout_constraintTop_toBottomOf="@id/textView19" />
+
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:src="@drawable/expense"
+                app:layout_constraintBottom_toTopOf="@id/textView16"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="25dp"
+                tools:layout_editor_absoluteY="161dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="My Expenses"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/textView16"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.375"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.65" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="56dp"
+                android:layout_height="37dp"
+                android:text="Total"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="@id/textView28"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱ 3002.00"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="@id/textView30"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="262dp"
+                tools:layout_editor_absoluteY="76dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="414dp"
             android:layout_height="442dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.481">
+            app:flow_horizontalBias="0.0"
+            app:layout_constraintBottom_toTopOf="@+id/guidelinebot"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineright"
+            app:layout_constraintStart_toStartOf="@+id/guidelineleft"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView15"
@@ -295,7 +325,7 @@
                 android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Others"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar6"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -390,16 +420,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView13"
                 app:layout_constraintVertical_bias="0.753" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- debugger lang po itong comment hehe -->
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView2"
-            android:layout_width="409dp"
-            android:layout_height="66dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:menu="@menu/bottom_nav_menu" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
