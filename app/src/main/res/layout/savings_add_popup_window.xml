@@ -1,157 +1,191 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral70"
-    android:padding="25dp">
+    android:background="@android:color/transparent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="339dp"
-        android:layout_height="187dp"
-        android:background="@drawable/sapwheaderbg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="12dp"
-            android:text="Add New Goal"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/savings_addbtn"
-            android:layout_width="25sp"
-            android:layout_height="20sp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:foreground="@drawable/x_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.059"
-            app:srcCompat="@drawable/x_button" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- Background overlay with blur effect -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:alpha="0.3" />
 
     <LinearLayout
-        android:layout_width="339dp"
-        android:layout_height="370dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="399dp"
+        android:layout_gravity="center"
         android:background="@drawable/popupbg"
-        android:orientation="vertical">
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="25dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:background="@drawable/popupbg" />
+            android:layout_height="52dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/x_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/red_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/x_button_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:text="x"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="1.0" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.20" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/txtView_AddNewGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:text="Add New Goal"
+                android:textAlignment="center"
+                android:textColor="@color/brown"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/x_button"
+                app:layout_constraintHorizontal_bias="0.651"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.545" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.36" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.64" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:id="@+id/edit_goal_name"
-            android:layout_width="280dp"
+            android:id="@+id/editText_NewGoal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/sapwtextbg"
-            android:hint="          New Goal"
-            android:minHeight="48dp" />
+            android:hint="New Goal"
+            android:minHeight="48dp"
+            android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/edit_goal_amount"
-            android:layout_width="280sp"
+            android:id="@+id/editText_GoalAmount"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/sapwtextbg"
-            android:hint="        Goal Amount"
+            android:hint="Goal Amount"
             android:inputType="numberDecimal"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:textAlignment="center" />
 
-
-        <LinearLayout
-            android:layout_width="240dp"
-            android:layout_height="20dp"
-
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="57dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="55dp"
-                android:text="Start"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="57dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="93dp"
-                android:text="End"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginHorizontal="15dp">
+            android:layout_height="104dp">
 
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="60dp"
+                android:text="End"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/edit_start_date"
-                android:layout_width="0dp"
+                android:id="@+id/editText_StartDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="13dp"
                 android:background="@drawable/sapwtextbg"
-                android:hint="MM/DD/YY"
-                android:inputType="date"
+                android:hint="MM/DD/YYYY"
                 android:minHeight="48dp"
-                android:textAlignment="center"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <EditText
-                android:id="@+id/edit_end_date"
-                android:layout_width="0dp"
+                android:id="@+id/editText_EndDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/sapwtextbg"
-                android:hint="MM/DD/YY"
-                android:inputType="date"
+                android:hint="MM/DD/YYYY"
                 android:minHeight="48dp"
-                android:textAlignment="center"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="4dp"
+                android:text="Start"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
+            android:id="@+id/btn_Save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/scarlet"
             android:text="SAVE"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-
-
-</RelativeLayout>
+</FrameLayout>
