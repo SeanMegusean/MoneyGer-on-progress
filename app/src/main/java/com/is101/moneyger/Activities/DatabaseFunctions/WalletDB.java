@@ -57,7 +57,7 @@ public class WalletDB extends SQLiteOpenHelper {
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_DATE, date);
         cv.put(COLUMN_AMOUNT, amount);
-        cv.put(COLUMN_DESC, description);  // Insert the description
+        cv.put(COLUMN_DESC, description);
 
         long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
@@ -67,7 +67,6 @@ public class WalletDB extends SQLiteOpenHelper {
         }
     }
 
-    // Fetch all transactions
     public List<RecyclerModel> getAllTransactions() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<RecyclerModel> transactions = new ArrayList<>();
@@ -76,14 +75,13 @@ public class WalletDB extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Check if column indexes are valid
+
                 int idIndex = cursor.getColumnIndex(COLUMN_ID);
                 int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
                 int dateIndex = cursor.getColumnIndex(COLUMN_DATE);
                 int amountIndex = cursor.getColumnIndex(COLUMN_AMOUNT);
                 int descriptionIndex = cursor.getColumnIndex(COLUMN_DESC);
 
-                // Ensure valid column indexes before fetching data
                 if (idIndex != -1 && titleIndex != -1 && dateIndex != -1 && amountIndex != -1 && descriptionIndex != -1) {
                     int id = cursor.getInt(idIndex);
                     String title = cursor.getString(titleIndex);
@@ -93,7 +91,6 @@ public class WalletDB extends SQLiteOpenHelper {
 
                     transactions.add(new RecyclerModel(id,title, date, amount, description));
                 } else {
-                    // Log error if any column is missing
                     Log.e("WalletDB", "One or more columns are missing from the cursor");
                 }
             } while (cursor.moveToNext());
@@ -103,7 +100,6 @@ public class WalletDB extends SQLiteOpenHelper {
         db.close();
         return transactions;
     }
-
 
     public void deleteTransaction(int id) {
         SQLiteDatabase db = this.getWritableDatabase();

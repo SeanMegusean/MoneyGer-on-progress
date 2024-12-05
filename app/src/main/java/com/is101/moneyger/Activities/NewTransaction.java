@@ -37,7 +37,7 @@ public class NewTransaction extends Fragment {
         addexpensebtn = view.findViewById(R.id.addexpensebtn);
         descripttxt = view.findViewById(R.id.descripttxt);
 
-        // Spinner setup
+        // Spinner
         String[] categories = getResources().getStringArray(R.array.categories);
         ArrayAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -45,16 +45,14 @@ public class NewTransaction extends Fragment {
 
         setDate();
 
-        // Add expense button functionality
         addexpensebtn.setOnClickListener(v -> {
-            // Validate inputs
+
             if (formattedDate.isEmpty() || editTextText.getText().toString().trim().isEmpty() ||
                     spinnerCategory.getSelectedItemPosition() == 0) {
                 Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Parse amount and handle potential exceptions
             int amount;
             try {
                 amount = Integer.parseInt(editTextText.getText().toString().trim());
@@ -63,20 +61,16 @@ public class NewTransaction extends Fragment {
                 return;
             }
 
-            // Retrieve other inputs
             String category = spinnerCategory.getSelectedItem().toString().trim();
             String description = descripttxt.getText().toString().trim();
 
-            // Add the expense to the database
             WalletDB wdb = new WalletDB(getActivity());
             wdb.addExpense(category, formattedDate, amount, description);
 
-            // Clear input fields
-            editTextText.setText("");  // Clear the amount field
-            descripttxt.setText("");  // Clear the description field
-            spinnerCategory.setSelection(0); // Reset the spinner to the default value
+            editTextText.setText("");
+            descripttxt.setText("");
+            spinnerCategory.setSelection(0);
 
-            // Show a success message
             Toast.makeText(getActivity(), "Expense added successfully", Toast.LENGTH_SHORT).show();
         });
 
