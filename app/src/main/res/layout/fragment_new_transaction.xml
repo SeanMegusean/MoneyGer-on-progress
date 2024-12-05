@@ -11,8 +11,8 @@
         android:layout_width="35dp"
         android:layout_height="28dp"
         app:srcCompat="@drawable/arrow"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="28dp" />
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="34dp" />
 
     <TextView
         android:id="@+id/textView24"
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextText"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="163dp" />
+        tools:layout_editor_absoluteY="194dp" />
 
     <TextView
         android:id="@+id/IDexpense"
@@ -53,10 +53,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintHorizontal_bias="0.369"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -123,15 +123,13 @@
         android:id="@+id/IDincome"
         android:layout_width="146dp"
         android:layout_height="33dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="56dp"
         android:text="Income"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/IDexpense"
-        tools:layout_editor_absoluteY="90dp" />
+        tools:layout_editor_absoluteY="117dp" />
 
     <Button
         android:id="@+id/addexpensebtn"
@@ -142,7 +140,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttondate"
         app:layout_constraintVertical_bias="0.27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
