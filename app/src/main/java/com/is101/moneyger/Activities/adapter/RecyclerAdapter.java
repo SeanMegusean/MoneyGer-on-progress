@@ -1,7 +1,6 @@
 package com.is101.moneyger.Activities.adapter;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.is101.moneyger.Activities.DatabaseFunctions.WalletDB;
@@ -40,16 +38,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecyclerModel model = recyclerModels.get(position);
-        String formattedDate = model.getDate();
-        String formattedAmount = formatAmount(model.getAmount());
-
         holder.titleTextView.setText(model.getTitle());
-        holder.dateTextView.setText(formattedDate);
-        holder.amountTextView.setText(formattedAmount);
+        holder.dateTextView.setText(model.getDate());
+        holder.amountTextView.setText(formatAmount(model.getAmount()));
 
-        holder.itemView.setOnClickListener(v -> {
-            showItemDialog(model);
-        });
+        holder.itemView.setOnClickListener(v -> showItemDialog(model));
     }
 
     private void showItemDialog(RecyclerModel model) {
@@ -58,15 +51,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
         builder.setView(dialogView);
 
+        // Dialog views
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView descriptionTextView = dialogView.findViewById(R.id.descripPOP);
+        TextView dateTextView = dialogView.findViewById(R.id.date_text);
+        TextView amountTextView = dialogView.findViewById(R.id.amount_text);
+
         Button backButton = dialogView.findViewById(R.id.buttonback);
         Button deleteButton = dialogView.findViewById(R.id.buttondelete);
 
-        // Set the title and description from the model
         titleTextView.setText(model.getTitle());
-        descriptionTextView.setText("Date: " + model.getDate() + "\nAmount: " + formatAmount(model.getAmount()) + "\nNote: " + model.getDescription());
-        descriptionTextView.setGravity(Gravity.START | Gravity.TOP);
+        descriptionTextView.setText(getDescriptionText(model.getDescription()));
+        dateTextView.setText(model.getDate());
+        amountTextView.setText(formatAmount(model.getAmount()));
 
         android.app.AlertDialog dialog = builder.create();
         dialog.show();
@@ -74,20 +71,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         backButton.setOnClickListener(v -> dialog.dismiss());
 
         deleteButton.setOnClickListener(v -> {
-
             deleteItem(model);
             dialog.dismiss();
         });
     }
 
-    private void deleteItem(RecyclerModel model) {
-        //deleting items using ID \\ metod in walletdb
-        int itemId = model.getId();
-        WalletDB wdb = new WalletDB(context);
-        wdb.deleteTransaction(itemId);
+    private String getDescriptionText(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            return "Note: No description provided.";
+        } else {
+            return "Note: " + description;
+        }
+    }
 
-        recyclerModels.remove(model);
-        notifyDataSetChanged();
+    private void deleteItem(RecyclerModel model) {
+        WalletDB wdb = new WalletDB(context);
+        wdb.deleteTransaction(model.getId());
+
+        int position = recyclerModels.indexOf(model);
+        recyclerModels.remove(position);
+        notifyItemRemoved(position);
 
         Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show();
     }
@@ -110,10 +113,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     private String formatAmount(int amount) {
-        // Format amount with commas and currency symbol
         NumberFormat numberFormat = NumberFormat.getInstance();
-        String formattedAmount = numberFormat.format(amount);
-
-        return "₱" + formattedAmount;
+        return "₱" + numberFormat.format(amount);
     }
 }
