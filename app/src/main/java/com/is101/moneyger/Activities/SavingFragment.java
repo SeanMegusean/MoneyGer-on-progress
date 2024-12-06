@@ -18,11 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.is101.moneyger.Activities.adapter.SGAdapter;
 import com.is101.moneyger.R;
 import com.is101.moneyger.Activities.model.SavingModel;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +129,7 @@ public class SavingFragment extends Fragment {
         // Insert into database
         dbHelper.insertSaving(saving);
 
-        // Refresh the list
+        // di ko alam
         updateSavingsData(userId);
 
         Toast.makeText(getActivity(), "Saving added successfully!", Toast.LENGTH_SHORT).show();

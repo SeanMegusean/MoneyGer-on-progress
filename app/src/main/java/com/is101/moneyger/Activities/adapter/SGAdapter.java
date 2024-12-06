@@ -29,7 +29,7 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.ViewHolder> {
         SavingModel saving = savingsList.get(position);
         holder.bind(saving);
     }
-
+//ipasa mo kami maam please
     @Override
     public int getItemCount() {
         return savingsList.size();

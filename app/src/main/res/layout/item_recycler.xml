@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:padding="5sp">
 
-        <!-- TITLE -->
+        <!-- AHAHHALE -->
         <TextView
             android:id="@+id/title"
             android:layout_width="0sp"
