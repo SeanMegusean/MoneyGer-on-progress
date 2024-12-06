@@ -17,7 +17,7 @@ public class RecyclerModel {
         this.description = description;
     }
 
-    public RecyclerModel(int id, String name, double amount, String date) {
+    public RecyclerModel(String name, double amount) {
     }
 
     // Getter for id

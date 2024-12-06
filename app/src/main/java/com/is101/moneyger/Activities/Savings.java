@@ -1,22 +1,21 @@
 package com.is101.moneyger.Activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.is101.moneyger.Activities.model.SavingModel;
 import com.is101.moneyger.R;
 import com.is101.moneyger.Activities.adapter.RecyclerAdapter;
 import com.is101.moneyger.Activities.model.RecyclerModel;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,12 +30,9 @@ public class Savings extends Fragment {
     private DatabaseHelper dbHelper;
 
     private ImageButton savingsAddButton;
-    private ProgressBar savingsProgressBar;
-    private TextView totalSavingsTextView; // To display total savings
-    private double totalSavings; // To hold the total savings value
+    private TextView totalSavingsTextView;
 
     public Savings() {
-        // Required empty public constructor
     }
 
     @Override
@@ -50,16 +46,18 @@ public class Savings extends Fragment {
         View view = inflater.inflate(R.layout.fragment_savings, container, false);
         initializeViews(view);
         setupRecyclerView();
-        loadSavingsData();
+
+        int userId = getCurrentUserId();
+        loadSavingsData(userId);
         setupListeners();
+
         return view;
     }
 
     private void initializeViews(View view) {
         recyclerView = view.findViewById(R.id.rv_savings);
-        savingsAddButton = view.findViewById(R.id.savings_addbtn);
-        savingsProgressBar = view.findViewById(R.id.savings_PB);
-        totalSavingsTextView = view.findViewById(R.id.textView15); // Assuming this displays the total savings
+        savingsAddButton = view.findViewById(R.id.btnAddTransaction);
+        totalSavingsTextView = view.findViewById(R.id.textView_TotalAmount);
     }
 
     private void setupRecyclerView() {
@@ -68,17 +66,17 @@ public class Savings extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void loadSavingsData() {
+    private void loadSavingsData(int userId) {
         recyclerModels.clear();
-        recyclerModels.addAll(dbHelper.getAllSavings());
+        double totalSavings = dbHelper.getTotalSavings(userId);
+        recyclerModels.add(new RecyclerModel("Total Savings", totalSavings));
         recyclerAdapter.notifyDataSetChanged();
-        updateTotalSavings();
+        updateTotalSavings(userId);
     }
 
-    private void updateTotalSavings() {
-        totalSavings = dbHelper.getTotalSavings(); // Get total savings from the database
+    private void updateTotalSavings(int userId) {
+        double totalSavings = dbHelper.getTotalSavings(userId);
         totalSavingsTextView.setText(String.valueOf(totalSavings));
-        savingsProgressBar.setProgress((int) totalSavings); // Update progress bar based on total savings
     }
 
     private void setupListeners() {
@@ -86,16 +84,23 @@ public class Savings extends Fragment {
     }
 
     private void addSavings() {
-        double amountToAdd = 10.0; // Example default amount
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()); // Current date
-        boolean success = dbHelper.insertSavings("Default Savings", amountToAdd, currentDate); // Example name
+        double amountToAdd = 10.0;
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        int userId = getCurrentUserId();
+
+        SavingModel saving = new SavingModel(0, "Default Savings", amountToAdd, currentDate, null, userId);
+        boolean success = dbHelper.insertSaving(saving);
+
         if (success) {
-            loadSavingsData();
+            loadSavingsData(userId);
             Toast.makeText(getContext(), "Savings added!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Error adding savings", Toast.LENGTH_SHORT).show();
         }
     }
-}
 
-//this comment is used for me to push this version. Kindly dismiss this
+    private int getCurrentUserId() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("currentUserId", -1);
+    }
+}

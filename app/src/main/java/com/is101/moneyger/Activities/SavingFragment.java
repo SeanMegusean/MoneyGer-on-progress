@@ -35,13 +35,12 @@ public class SavingFragment extends Fragment {
     private SGAdapter adapter;
     private TextView totalSavingsTextView;
     private TextView currentAmountTextView;
-    private String currentUserID;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_savings, container, false);
+        View view = inflater.inflate(R.layout.fragment_savings, container);
 
         dbHelper = DatabaseHelper.getInstance(requireActivity());
         savingsList = new ArrayList<>();
@@ -57,31 +56,26 @@ public class SavingFragment extends Fragment {
         savingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         int currentUserId = getCurrentUserId();
-        double totalSavings = dbHelper.getTotalSavings(currentUserId);
-        double currentAmount = dbHelper.getCurrentAmount(currentUserId);
+        updateSavingsData(currentUserId);
 
-        totalSavingsTextView.setText(formatAmount(totalSavings));
-        currentAmountTextView.setText(formatAmount(currentAmount));
-
-        plusSignTextView.setOnClickListener(v -> showAddSavingsPopup());
+        plusSignTextView.setOnClickListener(v -> showAddSavingsPopup(currentUserId));
         txtViewMonthly.setOnClickListener(v -> showMonthlyGoalPopup());
 
         return view;
     }
 
-    private void showAddSavingsPopup() {
+    private void showAddSavingsPopup(int userId) {
         View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.savings_add_popup_window, null);
         PopupWindow popupWindow = new PopupWindow(popupView, FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT, true);
 
         // Set up the close button
-        View closeButton = popupView.findViewById(R.id.x_button);
-        closeButton.setOnClickListener(v -> popupWindow.dismiss());
+        popupView.findViewById(R.id.x_button).setOnClickListener(v -> popupWindow.dismiss());
 
         // Set up the save button
         Button saveButton = popupView.findViewById(R.id.btn_Save);
         saveButton.setOnClickListener(v -> {
-            if (addNewSaving(popupView)) {
+            if (addNewSaving(popupView, userId)) {
                 popupWindow.dismiss();
             }
         });
@@ -102,15 +96,12 @@ public class SavingFragment extends Fragment {
             }
         });
 
-        View xButton = popupView.findViewById(R.id.x_button);
-        xButton.setOnClickListener(v -> popupWindow.dismiss());
-
-        View xButtonSign = popupView.findViewById(R.id.x_button_sign);
-        xButtonSign.setOnClickListener(v -> popupWindow.dismiss());
+        popupView.findViewById(R.id.x_button).setOnClickListener(v -> popupWindow.dismiss());
+        popupView.findViewById(R.id.x_button_sign).setOnClickListener(v -> popupWindow.dismiss());
         popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
     }
 
-    private boolean addNewSaving(View popupView) {
+    private boolean addNewSaving(View popupView, int userId) {
         EditText nameEditText = popupView.findViewById(R.id.editText_NewGoal);
         EditText amountEditText = popupView.findViewById(R.id.editText_GoalAmount);
         EditText startDateEditText = popupView.findViewById(R.id.editText_StartDate);
@@ -135,15 +126,13 @@ public class SavingFragment extends Fragment {
         }
 
         // Create a new SavingModel object
-        SavingModel saving = new SavingModel(0, goalName, goalAmount, startDate, endDate, String.valueOf(getCurrentUserId()));
+        SavingModel saving = new SavingModel(0, goalName, goalAmount, startDate, endDate, userId);
 
         // Insert into database
         dbHelper.insertSaving(saving);
 
-        // Update the RecyclerView
-        savingsList.clear();
-        savingsList.addAll(dbHelper.getSavingsByUserId(getCurrentUserId())); // Fetch updated list
-        adapter.notifyDataSetChanged();
+        // Refresh the list
+        updateSavingsData(userId);
 
         Toast.makeText(getActivity(), "Saving added successfully!", Toast.LENGTH_SHORT).show();
         return true;
@@ -166,10 +155,19 @@ public class SavingFragment extends Fragment {
             return false;
         }
 
-        // Save the monthly goal to the database (implementation needed)
+        // Save the monthly goal to the database
+        dbHelper.setMonthlyGoal(goalAmount); // No need to pass user ID
 
         Toast.makeText(getActivity(), "Monthly goal set: " + formatAmount(goalAmount), Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    private void updateSavingsData(int userId) {
+        totalSavingsTextView.setText(formatAmount(dbHelper.getTotalSavings(userId)));
+        currentAmountTextView.setText(formatAmount(dbHelper.getCurrentAmount(userId)));
+        savingsList.clear();
+        savingsList.addAll(dbHelper.getSavingsByUserId(userId));
+        adapter.notifyDataSetChanged();
     }
 
     private int getCurrentUserId() {

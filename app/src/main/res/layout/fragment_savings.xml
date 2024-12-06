@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellowhite"
-    tools:context="com.is101.moneyger.Activities.SavingsFragment">
+    tools:context="com.is101.moneyger.Activities.SavingFragment">
 
     <ImageView
         android:id="@+id/imageView7"
@@ -205,5 +205,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Sadya yung messed-up design netong fragment. Ganto yung gumagana sa device ko na design. Wag adjust ko nalang 'to after ko matapos yung task ko ASAP -->
