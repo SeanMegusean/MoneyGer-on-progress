@@ -11,24 +11,20 @@
         android:layout_width="35dp"
         android:layout_height="28dp"
         app:srcCompat="@drawable/arrow"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="28dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="34dp" />
 
     <TextView
         android:id="@+id/textView24"
         android:layout_width="29dp"
         android:layout_height="52dp"
-        android:layout_marginTop="34dp"
         android:text="₱"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerCategory"
         app:layout_constraintEnd_toStartOf="@+id/editTextText"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IDexpense"
-        app:layout_constraintVertical_bias="0.619" />
+        tools:layout_editor_absoluteY="194dp" />
 
     <TextView
         android:id="@+id/IDexpense"
@@ -40,11 +36,11 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/editTextText"
         app:layout_constraintEnd_toStartOf="@+id/IDincome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112" />
+        app:layout_constraintVertical_bias="0.738" />
 
     <TextView
         android:id="@+id/textView14"
@@ -57,10 +53,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.548"
+        app:layout_constraintHorizontal_bias="0.369"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -116,6 +112,7 @@
         android:id="@+id/buttondate"
         android:layout_width="323dp"
         android:layout_height="66dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,17 +123,13 @@
         android:id="@+id/IDincome"
         android:layout_width="146dp"
         android:layout_height="33dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="56dp"
         android:text="Income"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/IDexpense"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
-        app:layout_constraintVertical_bias="0.028" />
+        tools:layout_editor_absoluteY="117dp" />
 
     <Button
         android:id="@+id/addexpensebtn"
@@ -147,7 +140,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttondate"
         app:layout_constraintVertical_bias="0.27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

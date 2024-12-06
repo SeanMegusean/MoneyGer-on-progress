@@ -204,7 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Insert a new savings entry
-// Insert a new savings entry
+    // Insert a new savings entry.
     public boolean insertSaving(SavingModel saving) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
