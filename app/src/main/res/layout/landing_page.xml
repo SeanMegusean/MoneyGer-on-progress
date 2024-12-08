@@ -8,6 +8,18 @@
     android:background="@color/white"
     tools:context=".Activities.MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/untitled_design__1__removebg" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/Hstartguideline"
         android:layout_width="wrap_content"
@@ -37,20 +49,12 @@
         app:layout_constraintGuide_percent="0.80" />
 
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/untitled_design__1__removebg" />
-
-    <ImageView
         android:id="@+id/imageView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/Hendguideline"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/Vendguideline"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="@+id/Vendguideline"
         app:layout_constraintStart_toStartOf="@+id/Vstartguideline"
         app:layout_constraintTop_toTopOf="@+id/Hstartguideline"
         app:layout_constraintVertical_bias="0.0"

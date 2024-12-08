@@ -48,12 +48,11 @@
             android:layout_marginBottom="192dp"
             android:text="₱ 0.00"
             android:textColor="@color/brown"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:textStyle="bold"
+            android:layout_marginEnd="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView9"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.79"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -146,6 +145,7 @@
             android:textColor="@color/brown"
             android:textSize="25sp"
             android:textStyle="bold"
+            android:layout_marginStart="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
