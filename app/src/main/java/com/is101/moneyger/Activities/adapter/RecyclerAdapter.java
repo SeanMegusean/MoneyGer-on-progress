@@ -34,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         View view = LayoutInflater.from(context).inflate(R.layout.item_recycler, parent, false);
         return new ViewHolder(view);
     }
-
+//gago
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecyclerModel model = recyclerModels.get(position);

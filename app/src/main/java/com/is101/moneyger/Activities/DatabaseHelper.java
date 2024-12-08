@@ -312,7 +312,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String startDate = cursor.getString(startDateIndex);
                     String endDate = cursor.getString(endDateIndex);
 
-                    savingModels.add(new SavingModel(savingId, name, amount, startDate, endDate, String.valueOf(userId)));
+                    savingModels.add(new SavingModel(savingId, name, amount, startDate, endDate, userId));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -327,6 +327,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return savingModels;
     }
 
+    // Set monthly goal for the user
+    public void setMonthlyGoal(double goalAmount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("M_Goal", goalAmount); // Assuming you have a single M_Goal field in your table
+
+            // Update the monthly goal for a specific entry (you may want to specify which entry if needed)
+            db.update(TABLE_SAVINGS, values, "S_id = ?", new String[]{"1"}); // Example: updating the first entry
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error setting monthly goal: " + e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
     // Get all savings grouped by user
     public Map<Integer, List<SavingModel>> getAllSavingsGroupedByUser() {
         Map<Integer, List<SavingModel>> savingsMap = new HashMap<>();
@@ -359,7 +374,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String startDate = cursor.getString(startDateIndex);
                     String endDate = cursor.getString(endDateIndex);
 
-                    SavingModel saving = new SavingModel(savingId, name, amount, startDate, endDate, String.valueOf(userId));
+                    SavingModel saving = new SavingModel(savingId, name, amount, startDate, endDate, userId);
                     savingsMap.computeIfAbsent(userId, k -> new ArrayList<>()).add(saving);
                 } while (cursor.moveToNext());
             }

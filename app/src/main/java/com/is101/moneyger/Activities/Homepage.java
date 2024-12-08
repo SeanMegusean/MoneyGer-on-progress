@@ -46,14 +46,14 @@ public class Homepage extends AppCompatActivity {
 
         // Bottom Navigation listener
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            Fragment selectedFragment = new Wallet();
 
             if (item.getItemId() == R.id.wallet) {
                 selectedFragment = new Wallet();
             } else if (item.getItemId() == R.id.expense) {
                 selectedFragment = new Expenses();
             } else if (item.getItemId() == R.id.savings) {
-                selectedFragment = new Savings();
+                selectedFragment = new SavingFragment();
             }
 
             return replaceFragment(selectedFragment);
