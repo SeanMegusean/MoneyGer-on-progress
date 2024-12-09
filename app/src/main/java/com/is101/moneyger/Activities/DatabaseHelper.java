@@ -463,5 +463,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true; // Replace with actual implementation
     }
 
-    //Other methods for managing profits and expenses can be added similarly
+    // Other methods for managing profits and expenses can be added similarly
 }
