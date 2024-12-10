@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "moneyger.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     private static DatabaseHelper instance;
 
@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USERS = "users";
     private static final String TABLE_SAVINGS = "savings";
     private static final String TABLE_GOALS = "goals";
+    private static final String TABLE_MONTHLY_GOALS = "monthly_goals"; // New table for monthly goals
     private static final String TABLE_TRANSACTIONS = "transactions";
     private static final String TABLE_TRANSACTION_TYPES = "transaction_types";
     private static final String TABLE_WALLET = "wallet";
@@ -60,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createUsersTable());
         db.execSQL(createSavingsTable());
         db.execSQL(createGoalsTable());
+        db.execSQL(createMonthlyGoalsTable()); // Create monthly goals table
         db.execSQL(createTransactionTypesTable());
         db.execSQL(createTransactionsTable());
         db.execSQL(createWalletTable());
@@ -93,6 +95,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_SAVING_ID + " INTEGER NOT NULL, " +
                 COLUMN_GOAL_AMOUNT + " REAL NOT NULL, " +
                 "FOREIGN KEY(" + COLUMN_SAVING_ID + ") REFERENCES " + TABLE_SAVINGS + "(" + COLUMN_SAVING_ID + "))";
+    }
+
+    // New method to create the monthly goals table
+    private String createMonthlyGoalsTable() {
+        return "CREATE TABLE " + TABLE_MONTHLY_GOALS + " (" +
+                "goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "goal_amount REAL NOT NULL, " +
+                "user_id INTEGER, " +
+                "FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "))";
     }
 
     private String createTransactionTypesTable() {
@@ -154,6 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONTHLY_GOALS); // Drop monthly goals table
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GOALS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFITS);
@@ -164,6 +176,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
+
+    // Monthly Goals Methods
+
+    public boolean insertMonthlyGoal(double goalAmount, int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("goal_amount", goalAmount);
+        values.put("user_id", userId);
+        long result = db.insert(TABLE_MONTHLY_GOALS, null, values);
+        db.close();
+        return result != -1;
+    }
+
+    public double getMonthlyGoal(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        double goalAmount = 0.0; // Default value
+
+        try {
+            cursor = db.query(TABLE_MONTHLY_GOALS,
+                    new String[]{"goal_amount"},
+                    "user_id = ?",
+                    new String[]{String.valueOf(userId)},
+                    null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int goalAmountIndex = cursor.getColumnIndex("goal_amount");
+                if (goalAmountIndex != -1) {
+                    goalAmount = cursor.getDouble(goalAmountIndex); // Get the double value
+                }
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error retrieving monthly goal: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Ensure the cursor is closed to avoid memory leaks
+            }
+            db.close();
+        }
+
+        return goalAmount; // Return 0.0 if no goal is found
+    }
+
+    public boolean updateMonthlyGoal(int userId, double newGoalAmount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("goal_amount", newGoalAmount);
+        int rowsAffected = db.update(TABLE_MONTHLY_GOALS, values, "user_id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+        return rowsAffected > 0; // Return true if the update was successful
+    }
+
+    // Other existing methods...
 
     // Check if the user exists
     public boolean checkUser(String username, String pin) {
@@ -344,7 +409,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Retrieve all transactions
-// Retrieve all transactions
     public List<Map<String, String>> getAllTransactions() {
         List<Map<String, String>> transactionList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -386,6 +450,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Update a savings entry
+    // Update a savings entry
     public boolean updateSaving(SavingModel saving) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -393,9 +458,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SAVING_AMOUNT, saving.getAmount());
         values.put(COLUMN_SAVING_START_DATE, saving.getStartDate());
         values.put(COLUMN_SAVING_END_DATE, saving.getEndDate());
+
         int rowsAffected = db.update(TABLE_SAVINGS, values, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(saving.getId())});
         db.close();
-        return rowsAffected > 0;
+        return rowsAffected > 0; // Return true if the update was successful
     }
 
     // Delete a savings entry
@@ -403,23 +469,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(TABLE_SAVINGS, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(savingId)});
         db.close();
-        return rowsAffected > 0;
+        return rowsAffected > 0; // Return true if the delete was successful
     }
 
-    // Placeholder methods for profits and expenses
-    public boolean insertProfit() {
-        return true; // Placeholder
+    // Delete a monthly goal
+    public boolean deleteMonthlyGoal(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_MONTHLY_GOALS, "user_id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+        return rowsAffected > 0; // Return true if the delete was successful
     }
 
-    public boolean insertExpense() {
-        return true; // Placeholder
+    // Get all transaction types
+    public List<String> getAllTransactionTypes() {
+        List<String> transactionTypes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        try (Cursor cursor = db.rawQuery("SELECT " + COLUMN_TYPE_NAME + " FROM " + TABLE_TRANSACTION_TYPES, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int typeNameIndex = cursor.getColumnIndex(COLUMN_TYPE_NAME);
+                    if (typeNameIndex != -1) {
+                        transactionTypes.add(cursor.getString(typeNameIndex));
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error retrieving transaction types: " + e.getMessage());
+        }
+        return transactionTypes;
     }
 
-    public List<Map<String, String>> getAllProfits() {
-        return new ArrayList<>(); // Placeholder
-    }
-
-    public List<Map<String, String>> getAllExpenses() {
-        return new ArrayList<>(); // Placeholder
+    // Close the database
+    @Override
+    public void close() {
+        super.close();
     }
 }
