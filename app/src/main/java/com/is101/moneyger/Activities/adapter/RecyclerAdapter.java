@@ -34,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         View view = LayoutInflater.from(context).inflate(R.layout.item_recycler, parent, false);
         return new ViewHolder(view);
     }
-//gago
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecyclerModel model = recyclerModels.get(position);
@@ -106,7 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.title);
+            titleTextView = itemView.findViewById(R.id.textView_MonthlyGoal);
             dateTextView = itemView.findViewById(R.id.date);
             amountTextView = itemView.findViewById(R.id.amount);
         }
@@ -116,4 +116,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         NumberFormat numberFormat = NumberFormat.getInstance();
         return "₱" + numberFormat.format(amount);
     }
-}
+} //asfbjh

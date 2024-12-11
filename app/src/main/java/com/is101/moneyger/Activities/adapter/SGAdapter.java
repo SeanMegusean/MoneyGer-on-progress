@@ -12,9 +12,17 @@ import java.util.List;
 
 public class SGAdapter extends RecyclerView.Adapter<SGAdapter.ViewHolder> {
     private List<SavingModel> savingsList;
+    private OnItemClickListener onItemClickListener;
 
-    public SGAdapter(List<SavingModel> savingsList) {
+    // Interface for click listener
+    public interface OnItemClickListener {
+        void onEdit(SavingModel saving);
+        void onDelete(SavingModel saving);
+    }
+
+    public SGAdapter(List<SavingModel> savingsList, OnItemClickListener onItemClickListener) {
         this.savingsList = savingsList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -28,8 +36,17 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SavingModel saving = savingsList.get(position);
         holder.bind(saving);
+
+        // Set the click listener for editing the item
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onEdit(saving));
+
+        // Set the long click listener for deletion
+        holder.itemView.setOnLongClickListener(v -> {
+            onItemClickListener.onDelete(saving);
+            return true; // Return true to indicate the event was handled
+        });
     }
-//ipasa mo kami maam please
+
     @Override
     public int getItemCount() {
         return savingsList.size();
@@ -50,4 +67,4 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.ViewHolder> {
             amountTextView.setText(String.format("₱%.2f", saving.getAmount())); // Format amount
         }
     }
-}
+} //comment
