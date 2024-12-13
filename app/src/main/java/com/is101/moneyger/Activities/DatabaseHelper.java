@@ -61,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createUsersTable());
         db.execSQL(createSavingsTable());
         db.execSQL(createGoalsTable());
-        db.execSQL(createMonthlyGoalsTable()); // Create monthly goals table
+        db.execSQL(createMonthlyGoalsTable());
         db.execSQL(createTransactionTypesTable());
         db.execSQL(createTransactionsTable());
         db.execSQL(createWalletTable());
@@ -97,7 +97,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COLUMN_SAVING_ID + ") REFERENCES " + TABLE_SAVINGS + "(" + COLUMN_SAVING_ID + "))";
     }
 
-    // New method to create the monthly goals table
     private String createMonthlyGoalsTable() {
         return "CREATE TABLE " + TABLE_MONTHLY_GOALS + " (" +
                 "goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -165,7 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONTHLY_GOALS); // Drop monthly goals table
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONTHLY_GOALS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GOALS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFITS);
@@ -179,14 +178,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Monthly Goals Methods
 
-    public boolean insertMonthlyGoal(double goalAmount, int userId) {
+    public void insertMonthlyGoal(int userId, double goalAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("goal_amount", goalAmount);
         values.put("user_id", userId);
+
         long result = db.insert(TABLE_MONTHLY_GOALS, null, values);
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Error inserting monthly goal");
+        } else {
+            Log.d("DatabaseHelper", "Inserted monthly goal with ID: " + result);
+        }
         db.close();
-        return result != -1;
     }
 
     public double getMonthlyGoal(int userId) {
@@ -204,14 +208,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor != null && cursor.moveToFirst()) {
                 int goalAmountIndex = cursor.getColumnIndex("goal_amount");
                 if (goalAmountIndex != -1) {
-                    goalAmount = cursor.getDouble(goalAmountIndex); // Get the double value
+                    goalAmount = cursor.getDouble(goalAmountIndex);
                 }
             }
         } catch (Exception e) {
             Log.e("DatabaseHelper", "Error retrieving monthly goal: " + e.getMessage());
         } finally {
             if (cursor != null) {
-                cursor.close(); // Ensure the cursor is closed to avoid memory leaks
+                cursor.close(); // Close cursor to avoid memory leaks
             }
             db.close();
         }
@@ -219,18 +223,91 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return goalAmount; // Return 0.0 if no goal is found
     }
 
-    public boolean updateMonthlyGoal(int userId, double newGoalAmount) {
+    public void setMonthlyGoal(int userId, double newGoalAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("goal_amount", newGoalAmount);
-        int rowsAffected = db.update(TABLE_MONTHLY_GOALS, values, "user_id = ?", new String[]{String.valueOf(userId)});
+        values.put("user_id", userId);
+
+        int rowsAffected = db.update(TABLE_MONTHLY_GOALS, values, "user_id=?",
+                new String[]{String.valueOf(userId)});
+        if (rowsAffected == 0) {
+            // No rows updated, insert a new record
+            long result = db.insert(TABLE_MONTHLY_GOALS, null, values);
+            if (result == -1) {
+                Log.e("DatabaseHelper", "Error inserting new monthly goal");
+            } else {
+                Log.d("DatabaseHelper", "Inserted new monthly goal with ID: " + result);
+            }
+        } else {
+            Log.d("DatabaseHelper", "Updated monthly goal for user ID: " + userId);
+        }
+        db.close();
+    }
+
+    public void updateMonthlyGoal(int userId, double goalAmount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("goal_amount", goalAmount);
+
+        // Check if the goal record exists
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_MONTHLY_GOALS + " WHERE user_id = ?", new String[]{String.valueOf(userId)});
+        if (cursor.getCount() > 0) {
+            // Update existing goal
+            db.update(TABLE_MONTHLY_GOALS, values, "user_id = ?", new String[]{String.valueOf(userId)});
+        } else {
+            // Insert new goal
+            insertMonthlyGoal(userId, goalAmount);
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public boolean updateSaving(SavingModel saving) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SAVING_NAME, saving.getName());
+        values.put(COLUMN_SAVING_AMOUNT, saving.getAmount());
+        values.put(COLUMN_SAVING_START_DATE, saving.getStartDate());
+        values.put(COLUMN_SAVING_END_DATE, saving.getEndDate());
+
+        int rowsAffected = db.update(TABLE_SAVINGS, values, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(saving.getId())});
         db.close();
         return rowsAffected > 0; // Return true if the update was successful
     }
 
-    // Other existing methods...
+    public boolean deleteSaving(int savingId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_SAVINGS, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(savingId)});
+        db.close();
+        return rowsAffected > 0; // Return true if the delete was successful
+    }
 
-    // Check if the user exists
+    public boolean deleteMonthlyGoal(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_MONTHLY_GOALS, "user_id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+        return rowsAffected > 0; // Return true if the delete was successful
+    }
+
+    public String getUsernameById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("users", new String[]{"U_username"}, "U_id=?", new String[]{String.valueOf(userId)}, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int index = cursor.getColumnIndex("U_username");
+                if (index != -1) {
+                    String username = cursor.getString(index);
+                    cursor.close();
+                    return username;
+                }
+            }
+            cursor.close();
+        }
+        return ""; // Return an empty string if not found
+    }
+
     public boolean checkUser(String username, String pin) {
         SQLiteDatabase db = this.getReadableDatabase();
         try (Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE U_username = ? AND U_pin = ?", new String[]{username, pin})) {
@@ -241,7 +318,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Insert a new user
     public boolean insertUser(String username, String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -252,7 +328,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Retrieve user details by user ID
     public Object getUserById(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         try (Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE U_id = ?", new String[]{String.valueOf(userId)})) {
@@ -262,9 +337,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int pinIndex = cursor.getColumnIndex("U_pin");
 
                 if (idIndex != -1 && usernameIndex != -1 && pinIndex != -1) {
-                    // Assuming you will create a user model
-                    // Replace with actual user structure
-                    return new Object();
+                    // Placeholder for user model creation
+                    return new Object(); // Replace with actual user structure
                 }
             }
         } catch (Exception e) {
@@ -273,7 +347,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    // Check if a user exists by username
     public boolean isUserExists(String username, String pin) {
         SQLiteDatabase db = this.getReadableDatabase();
         try (Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE U_username = ? AND U_pin = ?", new String[]{username, pin})) {
@@ -284,7 +357,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Insert a new savings entry
     public boolean insertSaving(SavingModel saving) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -298,7 +370,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Insert a new goal entry
     public boolean insertGoal(int savingId, double goalAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -309,7 +380,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Retrieve current amount for a specific savings entry by its ID
     public double getCurrentAmount(int savingId) {
         SQLiteDatabase db = this.getReadableDatabase();
         try (Cursor cursor = db.rawQuery("SELECT S_amount FROM " + TABLE_SAVINGS + " WHERE S_id = ?", new String[]{String.valueOf(savingId)})) {
@@ -325,7 +395,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // Retrieve total savings by user ID
     public double getTotalSavings(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         try (Cursor cursor = db.rawQuery("SELECT SUM(S_amount) AS total FROM " + TABLE_SAVINGS + " WHERE Wallet_ID = ?", new String[]{String.valueOf(userId)})) {
@@ -341,7 +410,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // Retrieve all savings for a user
     public List<SavingModel> getSavingsByUserId(int userId) {
         List<SavingModel> savingsList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -396,7 +464,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return savingsList;
     }
 
-    // Insert a new transaction
     public boolean insertTransaction(int typeId, double amount, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -408,100 +475,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Retrieve all transactions
     public List<Map<String, String>> getAllTransactions() {
         List<Map<String, String>> transactionList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        try (Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TRANSACTIONS, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                // Log available column names
-                String[] columnNames = cursor.getColumnNames();
-                Log.d("DatabaseHelper", "Columns returned: " + Arrays.toString(columnNames));
+        Cursor cursor = null;
 
+        try {
+            cursor = db.rawQuery("SELECT transaction_id, type_name, amount, description, transaction_date FROM " + TABLE_TRANSACTIONS + " INNER JOIN " + TABLE_TRANSACTION_TYPES + " ON " + TABLE_TRANSACTIONS + ".type_id = " + TABLE_TRANSACTION_TYPES + ".type_id", null);
+
+            if (cursor != null && cursor.moveToFirst()) {
                 do {
                     Map<String, String> transaction = new HashMap<>();
-                    // Check each column index
-                    int transactionIdIndex = cursor.getColumnIndex("transaction_id");
-                    int typeIdIndex = cursor.getColumnIndex("type_id");
-                    int amountIndex = cursor.getColumnIndex("amount");
-                    int descriptionIndex = cursor.getColumnIndex("description");
-                    int transactionDateIndex = cursor.getColumnIndex("transaction_date");
-
-                    // Ensure all indices are valid
-                    if (transactionIdIndex != -1 && typeIdIndex != -1 && amountIndex != -1 &&
-                            descriptionIndex != -1 && transactionDateIndex != -1) {
-
-                        transaction.put("transaction_id", cursor.getString(transactionIdIndex));
-                        transaction.put("type_id", cursor.getString(typeIdIndex));
-                        transaction.put("amount", cursor.getString(amountIndex));
-                        transaction.put("description", cursor.getString(descriptionIndex));
-                        transaction.put("transaction_date", cursor.getString(transactionDateIndex));
-
-                        transactionList.add(transaction);
-                    } else {
-                        Log.e("DatabaseHelper", "One or more column indices are invalid.");
-                    }
+                    transaction.put("transaction_id", cursor.getString(cursor.getColumnIndex("transaction_id")));
+                    transaction.put("type_name", cursor.getString(cursor.getColumnIndex("type_name")));
+                    transaction.put("amount", cursor.getString(cursor.getColumnIndex("amount")));
+                    transaction.put("description", cursor.getString(cursor.getColumnIndex("description")));
+                    transaction.put("transaction_date", cursor.getString(cursor.getColumnIndex("transaction_date")));
+                    transactionList.add(transaction);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             Log.e("DatabaseHelper", "Error retrieving transactions: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Close cursor to avoid memory leaks
+            }
+            db.close();
         }
+
         return transactionList;
     }
 
-    // Update a savings entry
-    // Update a savings entry
-    public boolean updateSaving(SavingModel saving) {
+    public void deleteTransaction(int transactionId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TRANSACTIONS, "transaction_id = ?", new String[]{String.valueOf(transactionId)});
+        db.close();
+    }
+
+    public void updateTransaction(int transactionId, String description, double amount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_SAVING_NAME, saving.getName());
-        values.put(COLUMN_SAVING_AMOUNT, saving.getAmount());
-        values.put(COLUMN_SAVING_START_DATE, saving.getStartDate());
-        values.put(COLUMN_SAVING_END_DATE, saving.getEndDate());
-
-        int rowsAffected = db.update(TABLE_SAVINGS, values, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(saving.getId())});
+        values.put("description", description);
+        values.put("amount", amount);
+        db.update(TABLE_TRANSACTIONS, values, "transaction_id = ?", new String[]{String.valueOf(transactionId)});
         db.close();
-        return rowsAffected > 0; // Return true if the update was successful
     }
 
-    // Delete a savings entry
-    public boolean deleteSaving(int savingId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_SAVINGS, COLUMN_SAVING_ID + " = ?", new String[]{String.valueOf(savingId)});
-        db.close();
-        return rowsAffected > 0; // Return true if the delete was successful
-    }
-
-    // Delete a monthly goal
-    public boolean deleteMonthlyGoal(int userId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_MONTHLY_GOALS, "user_id = ?", new String[]{String.valueOf(userId)});
-        db.close();
-        return rowsAffected > 0; // Return true if the delete was successful
-    }
-
-    // Get all transaction types
-    public List<String> getAllTransactionTypes() {
-        List<String> transactionTypes = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        try (Cursor cursor = db.rawQuery("SELECT " + COLUMN_TYPE_NAME + " FROM " + TABLE_TRANSACTION_TYPES, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    int typeNameIndex = cursor.getColumnIndex(COLUMN_TYPE_NAME);
-                    if (typeNameIndex != -1) {
-                        transactionTypes.add(cursor.getString(typeNameIndex));
-                    }
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Error retrieving transaction types: " + e.getMessage());
-        }
-        return transactionTypes;
-    }
-
-    // Close the database
     @Override
     public void close() {
         super.close();
     }
-}
+} //push comment
